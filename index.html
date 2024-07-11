@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RANDOM DOGGOS!!</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.0/dist/sweetalert2.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <button id="button-top">
+        <img src="./assets/icons/arrow-up.svg" alt="arrow-up" class="icon" />
+      </button>
+      <h1>DOGGOS APP</h1>
+      <button id="button-bottom">
+        <img
+          src="./assets/icons/arrow-down.svg"
+          alt="arrow-down"
+          class="icon"
+        />
+      </button>
+    </header>
+    <main class="container">
+      <div>
+        <input
+          type="text"
+          id="user-input"
+          name="user-input"
+          placeholder="Enter your username"
+        />
+        <button id="button-login">Log In</button>
+        <label id="userId"></label>
+      </div>
+      <section class="section-container" id="upload-container">
+        <h2>Upload a picture of your doggo!</h2>
+        <h3>Max 10 for each user</h3>
+        <form id="form-upload">
+          <input id="file" type="file" name="file" multiple />
+          <div class="preview"></div>
+          <button type="button" id="button-upload">Upload doggo</button>
+        </form>
+      </section>
+      <section class="section-container">
+        <h2>Random Doggos</h2>
+        <div class="dogs-container">
+          <article>
+            <img alt="Picture of random doggo" id="dog1" />
+            <button id="button-add-1">
+              <img src="./assets/icons/fav.svg" alt="" class="icon" />
+            </button>
+          </article>
+          <article>
+            <img alt="Picture of random doggo" id="dog2" />
+            <button id="button-add-2">
+              <img src="./assets/icons/fav.svg" alt="" class="icon" />
+            </button>
+          </article>
+        </div>
+        <button id="button-random">More doggos!!</button>
+      </section>
+      <section class="section-container">
+        <h2>Your uploaded doggos</h2>
+        <div class="dogs-container" id="uploaded-container"></div>
+      </section>
+      <section class="section-container">
+        <h2 id="user">Favorites</h2>
+        <div class="dogs-container" id="favorites-container"></div>
+      </section>
+      <script src="./assets/js/main.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.0/dist/sweetalert2.all.min.js"></script>
+    </main>
+  </body>
+</html>
