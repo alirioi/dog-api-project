@@ -45,8 +45,11 @@
         <h2>Upload a picture of your doggo!</h2>
         <h3>Max 10 for each user</h3>
         <form id="form-upload">
-          <input id="file" type="file" name="file" multiple />
-          <div class="preview"></div>
+          <input id="file" type="file" name="file" hidden />
+          <label id="label-upload" for="file"
+            >Choose a picture of your doggo</label
+          >
+          <div id="preview"></div>
           <button type="button" id="button-upload">Upload doggo</button>
         </form>
       </section>

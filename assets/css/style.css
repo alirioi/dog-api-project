@@ -63,17 +63,44 @@ p {
   text-align: center;
   padding: 30px;
   border-radius: 5px;
+  gap: 20px;
 }
 
 #form-upload {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 30px;
 }
 
-#file {
-  color: brown;
+#preview {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  & img {
+    height: 60px;
+    width: 60px;
+  }
+}
+
+.preview {
+  align-items: center;
+  display: flex;
+  gap: 15px;
+}
+
+.info {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  & p {
+    color: brown;
+    font-size: 14px;
+    margin: 0;
+  }
 }
 
 #button-upload {
@@ -135,7 +162,8 @@ img {
   justify-content: center;
 }
 
-button {
+button,
+#label-upload {
   border: none;
   background-color: brown;
   border-radius: 16px;
@@ -215,10 +243,6 @@ article {
 
   h1 {
     font-size: 36px;
-  }
-
-  p {
-    display: none;
   }
 
   #userId {

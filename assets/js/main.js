@@ -352,6 +352,44 @@ async function previewFile(file) {
   }
 }
 
+const file = document.getElementById('file');
+file.addEventListener('change', (e) => {
+  console.log(e.target.files[0]);
+  const name = e.target.files[0].name;
+  const size = () => {
+    const kb = e.target.files[0].size / 1024;
+    const mb = kb / 1024;
+    return mb > 1 ? `${mb.toFixed(2)} MB` : `${kb.toFixed(2)} KB`;
+  };
+
+  if (
+    e.target.files[0].type === 'image/jpeg' ||
+    e.target.files[0].type === 'image/png'
+  ) {
+    reader = new FileReader();
+    reader.onload = function (e) {
+      console.log(e);
+      preview.innerHTML = `
+      <div class="preview">
+        <img src="${e.target.result}" alt="Preview of uploaded doggo" />
+        <div class="info">
+          <p>${name}</p>
+          <p>${size()}</p>
+        </div>
+      </div>
+      `;
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'You have to upload a picture!',
+      showConfirmButton: false,
+      timer: 2500,
+    });
+  }
+});
+
 loadUploadedDoggos();
 loadFavorites();
 getRandomDog(API_URL_RANDOM);
