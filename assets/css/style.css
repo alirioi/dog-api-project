@@ -85,6 +85,29 @@ p {
   }
 }
 
+#loadingContainer {
+  animation: loading 2s infinite;
+  display: none;
+  & span {
+    font-size: 30px;
+    color: brown;
+  }
+}
+
+@keyframes loading {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 .preview {
   align-items: center;
   display: flex;
@@ -252,7 +275,7 @@ article {
   #button-add-1,
   #button-add-2,
   #button-remove {
-    bottom: -20px;
+    bottom: -10px;
     right: 10px;
   }
 }

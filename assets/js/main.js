@@ -22,6 +22,8 @@ const buttonBottom = document.getElementById('button-bottom');
 const buttonTop = document.getElementById('button-top');
 const uploadedContent = document.getElementById('uploaded-container');
 const preview = document.getElementById('preview');
+const file = document.getElementById('file');
+const loadingContainer = document.getElementById('loadingContainer');
 
 async function getRandomDog(urlApi) {
   try {
@@ -202,6 +204,7 @@ async function uploadDoggo() {
   try {
     const file = document.getElementById('file').files[0];
     const fileSize = file.size;
+    loadingContainer.style.display = 'block';
     if (fileSize === 0) {
       Swal.fire({
         icon: 'error',
@@ -222,8 +225,9 @@ async function uploadDoggo() {
         },
         body: formData,
       });
+
       if (response.ok) {
-        const data = await response.json();
+        loadingContainer.style.display = 'none';
         Swal.fire({
           icon: 'success',
           title: 'You have uploaded a doggo!',
@@ -352,7 +356,6 @@ async function previewFile(file) {
   }
 }
 
-const file = document.getElementById('file');
 file.addEventListener('change', (e) => {
   console.log(e.target.files[0]);
   const name = e.target.files[0].name;
@@ -389,10 +392,6 @@ file.addEventListener('change', (e) => {
     });
   }
 });
-
-loadUploadedDoggos();
-loadFavorites();
-getRandomDog(API_URL_RANDOM);
 
 buttonLogin.addEventListener('click', () => {
   userId = document.getElementById('user-input').value;
@@ -455,3 +454,7 @@ buttonTop.addEventListener('click', () => {
     behavior: 'smooth',
   });
 });
+
+loadUploadedDoggos();
+loadFavorites();
+getRandomDog(API_URL_RANDOM);
