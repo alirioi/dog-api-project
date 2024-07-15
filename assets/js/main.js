@@ -1,15 +1,15 @@
-const API_URL_RANDOM = 'https://api.thedogapi.com/v1/images/search?limit=3';
-const API_URL_FAVORITE = (userId) =>
-  `https://api.thedogapi.com/v1/favourites?sub_id=${userId}`;
-const API_URL_REMOVE_FAVORITE = (dogId) =>
-  `https://api.thedogapi.com/v1/favourites/${dogId}`;
-const API_KEY =
+const api = axios.create({
+  baseURL: 'https://api.thedogapi.com/v1',
+});
+api.defaults.headers.common['X-API-KEY'] =
   'live_QGiILdeKcgXqUxNihwf6GxVbTlSwp6wQtkDH4mf86arJUKeNtlLwOj1GuwBboYYj';
-const API_URL_UPLOAD = 'https://api.thedogapi.com/v1/images/upload';
-const API_URL_GET_UPLOADED = (userId) =>
-  `https://api.thedogapi.com/v1/images/?limit=10&sub_id=${userId}`;
-const API_URL_REMOVE_UPLOADED = (dogId) =>
-  `https://api.thedogapi.com/v1/images/${dogId}`;
+
+const API_URL_RANDOM = '/images/search?limit=2';
+const API_URL_FAVORITE = (userId) => `/favourites?sub_id=${userId}`;
+const API_URL_REMOVE_FAVORITE = (dogId) => `/favourites/${dogId}`;
+const API_URL_UPLOAD = '/images/upload';
+const API_URL_GET_UPLOADED = (userId) => `/images/?limit=10&sub_id=${userId}`;
+const API_URL_REMOVE_UPLOADED = (dogId) => `/images/${dogId}`;
 let userId;
 
 const userContent = document.getElementById('user');
@@ -25,11 +25,10 @@ const preview = document.getElementById('preview');
 const file = document.getElementById('file');
 const loadingContainer = document.getElementById('loadingContainer');
 
-async function getRandomDog(urlApi) {
+async function getRandomDog() {
   try {
-    const response = await fetch(urlApi);
-    const data = await response.json();
-    console.log('random ', data);
+    const { data, status } = await api.get(API_URL_RANDOM);
+    console.log('random', data);
     const imgDog1 = document.getElementById('dog1');
     const imgDog2 = document.getElementById('dog2');
     const btn1 = document.getElementById('button-add-1');
@@ -56,14 +55,7 @@ async function getRandomDog(urlApi) {
 
 async function loadFavorites() {
   try {
-    const response = await fetch(API_URL_FAVORITE(userId), {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-KEY': API_KEY,
-      },
-    });
-    const data = await response.json();
+    const { data, status } = await api.get(API_URL_FAVORITE(userId));
     console.log('favoritos ', data);
 
     if (data.length === 0) {
@@ -119,18 +111,23 @@ async function addToFavorites(dogId) {
           timer: 2500,
         });
       } else {
-        const response = await fetch(API_URL_FAVORITE(userId), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': API_KEY,
-          },
-          body: JSON.stringify({
-            image_id: dogId,
-            sub_id: userId,
-          }),
+        const response = await api.post(URL_FAVORITE(userId), {
+          image_id: dogId,
+          sub_id: userId,
         });
-        const data = await response.json();
+        // const response = await fetch(API_URL_FAVORITE(userId), {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     'X-API-KEY': API_KEY,
+        //   },
+        //   body: JSON.stringify({
+        //     image_id: dogId,
+        //     sub_id: userId,
+        //   }),
+        // });
+        // const data = await response.json();
+
         Swal.fire({
           icon: 'success',
           title: 'You have added a doggo to favorites!',
@@ -169,12 +166,7 @@ async function removeFromFavorites(dogId) {
     });
 
     if (result.isConfirmed) {
-      const response = await fetch(API_URL_REMOVE_FAVORITE(dogId), {
-        method: 'DELETE',
-        headers: {
-          'X-API-KEY': API_KEY,
-        },
-      });
+      const { data, status } = await api.delete(API_URL_REMOVE_FAVORITE(dogId));
       loadFavorites();
       Swal.fire({
         icon: 'success',
@@ -205,6 +197,7 @@ async function uploadDoggo() {
     const file = document.getElementById('file').files[0];
     const fileSize = file.size;
     loadingContainer.style.display = 'block';
+
     if (fileSize === 0) {
       Swal.fire({
         icon: 'error',
@@ -216,17 +209,9 @@ async function uploadDoggo() {
       const form = document.getElementById('form-upload');
       const formData = new FormData(form);
       formData.append('sub_id', userId);
-      console.log(formData.getAll('file'));
+      const { data, status } = await api.post(API_URL_UPLOAD, formData);
 
-      const response = await fetch(API_URL_UPLOAD, {
-        method: 'POST',
-        headers: {
-          'X-API-KEY': API_KEY,
-        },
-        body: formData,
-      });
-
-      if (response.ok) {
+      if (status === 201) {
         loadingContainer.style.display = 'none';
         Swal.fire({
           icon: 'success',
@@ -234,6 +219,7 @@ async function uploadDoggo() {
           showConfirmButton: false,
           timer: 2500,
         });
+        preview.innerHTML = ``;
         loadUploadedDoggos();
       }
     }
@@ -249,14 +235,7 @@ async function uploadDoggo() {
 
 async function loadUploadedDoggos() {
   try {
-    const response = await fetch(API_URL_GET_UPLOADED(userId), {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-KEY': API_KEY,
-      },
-    });
-    const data = await response.json();
+    const { data, status } = await api.get(API_URL_GET_UPLOADED(userId));
     console.log('uploaded ', data);
 
     if (data.length === 0) {
@@ -283,7 +262,6 @@ async function loadUploadedDoggos() {
       `;
       uploadedContent.innerHTML = view;
     }
-    return data;
   } catch (error) {
     console.log(error);
     Swal.fire({
@@ -306,14 +284,7 @@ async function removeFromUploaded(dogId) {
     });
 
     if (result.isConfirmed) {
-      const response = await fetch(API_URL_REMOVE_UPLOADED(dogId), {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-KEY': API_KEY,
-        },
-        redirect: 'follow',
-      });
+      const { data, status } = await api.delete(API_URL_REMOVE_UPLOADED(dogId));
       loadUploadedDoggos();
       Swal.fire({
         icon: 'success',
@@ -339,25 +310,7 @@ async function removeFromUploaded(dogId) {
   }
 }
 
-async function previewFile(file) {
-  try {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      preview.innerHTML = `<img src="${reader.result}" alt="Preview of uploaded doggo" />`;
-    };
-  } catch (error) {
-    console.log(error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Oops... Could not preview uploaded doggo!',
-      text: `${error}`,
-    });
-  }
-}
-
 file.addEventListener('change', (e) => {
-  console.log(e.target.files[0]);
   const name = e.target.files[0].name;
   const size = () => {
     const kb = e.target.files[0].size / 1024;
@@ -371,7 +324,6 @@ file.addEventListener('change', (e) => {
   ) {
     reader = new FileReader();
     reader.onload = function (e) {
-      console.log(e);
       preview.innerHTML = `
       <div class="preview">
         <img src="${e.target.result}" alt="Preview of uploaded doggo" />
@@ -439,7 +391,7 @@ buttonUpload.addEventListener('click', () => {
   }
 });
 
-buttonRandom.addEventListener('click', () => getRandomDog(API_URL_RANDOM));
+buttonRandom.addEventListener('click', () => getRandomDog());
 
 buttonBottom.addEventListener('click', () => {
   window.scrollTo({
@@ -457,4 +409,4 @@ buttonTop.addEventListener('click', () => {
 
 loadUploadedDoggos();
 loadFavorites();
-getRandomDog(API_URL_RANDOM);
+getRandomDog();
