@@ -111,7 +111,7 @@ async function addToFavorites(dogId) {
           timer: 2500,
         });
       } else {
-        const response = await api.post(URL_FAVORITE(userId), {
+        const response = await api.post(API_URL_FAVORITE(userId), {
           image_id: dogId,
           sub_id: userId,
         });
