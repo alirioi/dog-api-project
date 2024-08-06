@@ -18,8 +18,6 @@ const buttonLogin = document.getElementById('button-login');
 const buttonUpload = document.getElementById('button-upload');
 const favoritesContent = document.getElementById('favorites-container');
 const buttonRandom = document.getElementById('button-random');
-const buttonBottom = document.getElementById('button-bottom');
-const buttonTop = document.getElementById('button-top');
 const uploadedContent = document.getElementById('uploaded-container');
 const preview = document.getElementById('preview');
 const file = document.getElementById('file');
@@ -392,20 +390,6 @@ buttonUpload.addEventListener('click', () => {
 });
 
 buttonRandom.addEventListener('click', () => getRandomDog());
-
-buttonBottom.addEventListener('click', () => {
-  window.scrollTo({
-    top: document.body.scrollHeight,
-    behavior: 'smooth',
-  });
-});
-
-buttonTop.addEventListener('click', () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  });
-});
 
 loadUploadedDoggos();
 loadFavorites();
