@@ -1,5 +1,5 @@
 :root {
-  --banner-color: rgb(80, 26, 26);
+  --banner-color: #501a1a;
   --bg-color: papayawhip;
   --button-color: brown;
   --h1-color: white;
@@ -8,7 +8,7 @@
   --p-color: white;
   --primary-color: brown;
   --secondary-color: chocolate;
-  --separator-color: rgba(210, 105, 30, 0.3);
+  --separator-color: #d2691e4d;
 }
 
 * {
@@ -64,6 +64,23 @@ p {
   color: var(--p-color);
 }
 
+.skeleton-loader {
+  animation: loading-skeleton infinite 1.5s;
+}
+
+.skeleton-loader:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+@keyframes loading-skeleton {
+  0%,
+  100% {
+    opacity: 100%;
+  }
+  50% {
+    opacity: 0%;
+  }
+}
 /* login */
 #user-input {
   border: none;

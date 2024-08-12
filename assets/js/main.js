@@ -31,6 +31,7 @@ async function getRandomDog() {
     const imgDog2 = document.getElementById('dog2');
     const btn1 = document.getElementById('button-add-1');
     const btn2 = document.getElementById('button-add-2');
+    removeSkeletonLoader();
     imgDog1.src = data[0].url;
     imgDog2.src = data[1].url;
 
@@ -309,6 +310,22 @@ async function removeFromUploaded(dogId) {
   }
 }
 
+function skeletonLoader() {
+  const imgDog1 = document.getElementById('dog1');
+  const imgDog2 = document.getElementById('dog2');
+  imgDog1.src = 'https://placehold.co/350x350/papayawhip/papayawhip';
+  imgDog2.src = 'https://placehold.co/350x350/papayawhip/papayawhip';
+  imgDog1.classList.add('skeleton-loader');
+  imgDog2.classList.add('skeleton-loader');
+}
+
+function removeSkeletonLoader() {
+  const imgDog1 = document.getElementById('dog1');
+  const imgDog2 = document.getElementById('dog2');
+  imgDog1.classList.remove('skeleton-loader');
+  imgDog2.classList.remove('skeleton-loader');
+}
+
 file.addEventListener('change', (e) => {
   const name = e.target.files[0].name;
   const size = () => {
@@ -390,7 +407,10 @@ buttonUpload.addEventListener('click', () => {
   }
 });
 
-buttonRandom.addEventListener('click', () => getRandomDog());
+buttonRandom.addEventListener('click', () => {
+  skeletonLoader();
+  getRandomDog();
+});
 
 loadUploadedDoggos();
 loadFavorites();
