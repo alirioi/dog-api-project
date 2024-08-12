@@ -194,7 +194,7 @@ async function uploadDoggo() {
   try {
     const file = document.getElementById('file').files[0];
     const fileSize = file.size;
-    loadingContainer.style.display = 'block';
+    loadingContainer.classList.remove('inactive');
 
     if (fileSize === 0) {
       Swal.fire({
@@ -210,7 +210,7 @@ async function uploadDoggo() {
       const { data, status } = await api.post(API_URL_UPLOAD, formData);
 
       if (status === 201) {
-        loadingContainer.style.display = 'none';
+        loadingContainer.classList.add('inactive');
         Swal.fire({
           icon: 'success',
           title: 'You have uploaded a doggo!',

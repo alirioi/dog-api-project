@@ -8,6 +8,7 @@
   --p-color: white;
   --primary-color: brown;
   --secondary-color: chocolate;
+  --separator-color: rgba(210, 105, 30, 0.3);
 }
 
 * {
@@ -102,26 +103,25 @@ p {
   }
 }
 
-#loadingContainer {
-  animation: loading 2s infinite;
-  display: none;
-  & span {
-    font-size: 30px;
-    color: var(--primary-color);
-  }
+/* HTML: <div class="loader"></div> */
+.loader {
+  height: 4px;
+  width: 200px;
+  --c: no-repeat linear-gradient(var(--secondary-color) 0 0);
+  background: var(--c), var(--c), var(--separator-color);
+  background-size: 60% 100%;
+  animation: l16 3s infinite;
 }
 
-@keyframes loading {
+@keyframes l16 {
   0% {
-    opacity: 1;
+    background-position: -150% 0, -150% 0;
   }
-
-  50% {
-    opacity: 0;
+  66% {
+    background-position: 250% 0, -150% 0;
   }
-
   100% {
-    opacity: 1;
+    background-position: 250% 0, 250% 0;
   }
 }
 
@@ -173,7 +173,7 @@ p {
 
 .section-container {
   align-items: center;
-  border-bottom: 4px solid rgba(210, 105, 30, 0.3);
+  border-bottom: 4px solid var(--separator-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -281,6 +281,10 @@ footer {
   width: 32px;
   box-shadow: none;
   border-radius: 0;
+}
+
+.inactive {
+  display: none;
 }
 
 /* media queries */
