@@ -218,6 +218,7 @@ async function uploadDoggo() {
           timer: 2500,
         });
         preview.innerHTML = ``;
+        document.getElementById('file').value = '';
         loadUploadedDoggos();
       }
     }
